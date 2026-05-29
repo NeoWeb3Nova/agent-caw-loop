@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiX402SettleRouteImport } from './routes/api/x402/settle'
+import { Route as ApiVideosIdStreamRouteImport } from './routes/api/videos/$id/stream'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiX402SettleRoute = ApiX402SettleRouteImport.update({
+  id: '/api/x402/settle',
+  path: '/api/x402/settle',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiVideosIdStreamRoute = ApiVideosIdStreamRouteImport.update({
+  id: '/api/videos/$id/stream',
+  path: '/api/videos/$id/stream',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/x402/settle': typeof ApiX402SettleRoute
+  '/api/videos/$id/stream': typeof ApiVideosIdStreamRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/x402/settle': typeof ApiX402SettleRoute
+  '/api/videos/$id/stream': typeof ApiVideosIdStreamRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/x402/settle': typeof ApiX402SettleRoute
+  '/api/videos/$id/stream': typeof ApiVideosIdStreamRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/api/x402/settle' | '/api/videos/$id/stream'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/api/x402/settle' | '/api/videos/$id/stream'
+  id: '__root__' | '/' | '/api/x402/settle' | '/api/videos/$id/stream'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiX402SettleRoute: typeof ApiX402SettleRoute
+  ApiVideosIdStreamRoute: typeof ApiVideosIdStreamRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +68,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/x402/settle': {
+      id: '/api/x402/settle'
+      path: '/api/x402/settle'
+      fullPath: '/api/x402/settle'
+      preLoaderRoute: typeof ApiX402SettleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/videos/$id/stream': {
+      id: '/api/videos/$id/stream'
+      path: '/api/videos/$id/stream'
+      fullPath: '/api/videos/$id/stream'
+      preLoaderRoute: typeof ApiVideosIdStreamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiX402SettleRoute: ApiX402SettleRoute,
+  ApiVideosIdStreamRoute: ApiVideosIdStreamRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
