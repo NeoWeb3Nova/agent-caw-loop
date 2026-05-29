@@ -5,15 +5,23 @@ import { PactPanel } from "@/components/console/PactPanel";
 import { LogPanel } from "@/components/console/LogPanel";
 import { AuditPanel } from "@/components/console/AuditPanel";
 import { ApprovalDialog } from "@/components/console/ApprovalDialog";
-import { Bot, Zap } from "lucide-react";
+import { Bot, Cpu } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "x402 Paywall × CAW Agent — Dev Console" },
-      { name: "description", content: "Minimal demo of an HTTP 402 video paywall settled autonomously by a budget-bound CAW agent." },
-      { property: "og:title", content: "x402 Paywall × CAW Agent" },
-      { property: "og:description", content: "Watch an agent parse a real HTTP 402 challenge, check Pact rules, settle, and unlock the video." },
+      { title: "x402 Paywall × Cobo Agentic Wallet — Dev Console" },
+      {
+        name: "description",
+        content:
+          "Minimal demo of an HTTP 402 video paywall settled autonomously by a budget-bound Cobo Agentic Wallet.",
+      },
+      { property: "og:title", content: "x402 Paywall × Cobo Agentic Wallet" },
+      {
+        property: "og:description",
+        content:
+          "Watch an agent parse a real HTTP 402 challenge, check Pact rules, settle, and unlock the video.",
+      },
     ],
   }),
   component: Index,
@@ -27,11 +35,14 @@ function Index() {
           <div className="max-w-[1500px] mx-auto px-6 py-3 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-primary/15 border border-primary/40 flex items-center justify-center">
-                <Zap className="w-4 h-4 text-primary" />
+                <Cpu className="w-4 h-4 text-primary" />
               </div>
               <div>
-                <h1 className="text-sm font-semibold leading-tight">x402 Paywall × CAW Agent</h1>
-                <p className="text-[11px] text-muted-foreground">video access · autonomous settlement · auditable</p>
+                <h1 className="text-sm font-semibold leading-tight">x402 Paywall × Cobo Agentic Wallet</h1>
+                <p className="text-[11px] text-muted-foreground">
+                  video access · autonomous settlement · auditable · by{" "}
+                  <span className="text-primary/80">Web3的尼奥</span>
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono">
@@ -53,7 +64,9 @@ function Index() {
         </main>
 
         <footer className="border-t border-border py-3 text-center text-[11px] text-muted-foreground font-mono">
-          server returns real HTTP 402 + <span className="text-primary">X-Payment-Required</span> · agent retries with <span className="text-primary">X-Payment</span> · facilitator mocks on-chain settlement
+          server returns real HTTP 402 + <span className="text-primary">X-Payment-Required</span> ·
+          agent retries with <span className="text-primary">X-Payment</span> · facilitator mocks
+          on-chain settlement
         </footer>
 
         <ApprovalDialog />

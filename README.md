@@ -1,4 +1,4 @@
-# x402 Paywall × CAW Agent
+# x402 Paywall × Cobo Agentic Wallet
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=fff)](https://react.dev/)
@@ -23,7 +23,7 @@ Every request to a protected resource follows a **challenge → evaluate → set
 ```
 ┌──────────────┐     1. GET /api/videos/:id            ┌──────────────┐
 │              │ ──────────────────────────────────▶   │              │
-│   CAW Agent  │     2. 402 + X-Payment-Required ◀─── │   Merchant   │
+│   Cobo Agentic Wallet  │     2. 402 + X-Payment-Required ◀─── │   Merchant   │
 │  (in-browser)│                                        │   Server     │
 │              │     3. Evaluate Pact rules             │              │
 │              │                                        │              │
