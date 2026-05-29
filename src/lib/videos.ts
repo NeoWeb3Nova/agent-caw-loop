@@ -11,31 +11,30 @@ export type Video = {
 export const VIDEOS: Video[] = [
   {
     id: "bbb-trailer",
-    title: "Big Buck Bunny — Trailer",
+    title: "Big Buck Bunny",
     description: "Open-source short. Cheap unlock to test happy-path agent flow.",
     priceUSDC: "0.02",
-    durationSec: 33,
+    durationSec: 10,
     poster: "https://peach.blender.org/wp-content/uploads/title_anouncement.jpg",
-    src: "https://media.w3.org/2010/05/bunny/movie.mp4",
+    src: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4",
   },
   {
     id: "sintel-teaser",
-    title: "Sintel — Teaser",
+    title: "Sintel",
     description: "Mid-priced unlock. Within default per-tx cap.",
     priceUSDC: "0.08",
-    durationSec: 99,
+    durationSec: 10,
     poster: "https://upload.wikimedia.org/wikipedia/commons/8/8f/Sintel_poster.jpg",
-    src: "https://media.w3.org/2010/05/sintel/trailer.mp4",
+    src: "https://test-videos.co.uk/vids/sintel/mp4/h264/360/Sintel_360_10s_1MB.mp4",
   },
   {
     id: "tears-of-steel-feature",
-    title: "Tears of Steel — Premium",
+    title: "Jellyfish — Premium",
     description: "Above default per-tx cap → triggers human approval.",
     priceUSDC: "0.50",
-    durationSec: 734,
-    poster:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Tos-poster.png/640px-Tos-poster.png",
-    src: "https://archive.org/download/Tears-of-Steel/tears_of_steel_720p.mp4",
+    durationSec: 10,
+    poster: "https://upload.wikimedia.org/wikipedia/commons/3/3b/Jellyfish-Bosporus-istanbul.JPG",
+    src: "https://test-videos.co.uk/vids/jellyfish/mp4/h264/720/Jellyfish_720_10s_1MB.mp4",
   },
 ];
 

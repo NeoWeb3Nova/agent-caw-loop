@@ -45,7 +45,7 @@ const AgentCtx = createContext<Ctx | null>(null);
 
 function defaultRules(): PactRules {
   return {
-    perTxMaxUSDC: 0.25,
+    perTxMaxUSDC: 1.0,
     dailyMaxUSDC: 1.0,
     windowMinutes: 60,
     windowStartedAt: Date.now(),
@@ -78,10 +78,19 @@ export function AgentProvider({ children }: { children: ReactNode }) {
   );
 
   const finalizeUnlock = useCallback(
-    (videoId: string, challenge: X402Challenge, payment: X402PaymentPayload, unlock: VideoUnlock, approvedBy: "agent" | "human") => {
+    (
+      videoId: string,
+      challenge: X402Challenge,
+      payment: X402PaymentPayload,
+      unlock: VideoUnlock,
+      approvedBy: "agent" | "human",
+    ) => {
       if (dailyRef.current.key !== todayKey()) dailyRef.current = { key: todayKey(), spent: 0 };
       dailyRef.current.spent += Number(payment.amount);
-      setWallet((w) => ({ ...w, balanceUSDC: Math.max(0, w.balanceUSDC - Number(payment.amount)) }));
+      setWallet((w) => ({
+        ...w,
+        balanceUSDC: Math.max(0, w.balanceUSDC - Number(payment.amount)),
+      }));
       setUnlocked((u) => ({ ...u, [videoId]: unlock }));
       recordAudit({
         id: randHex(8),
@@ -96,21 +105,49 @@ export function AgentProvider({ children }: { children: ReactNode }) {
         approvedBy,
         pactSnapshot: { ...rules },
       });
-      log({ level: "success", scope: "audit", message: `Audit record sealed for ${videoId}`, data: { tx: unlock.receipt.txHash } });
+      log({
+        level: "success",
+        scope: "audit",
+        message: `Audit record sealed for ${videoId}`,
+        data: { tx: unlock.receipt.txHash },
+      });
     },
     [log, recordAudit, rules],
   );
 
   const runSettlement = useCallback(
-    async (videoId: string, challenge: X402Challenge, payment: X402PaymentPayload, approvedBy: "agent" | "human") => {
-      log({ level: "http", scope: "http", message: `Retrying GET ${challenge.resource} with X-Payment header` });
+    async (
+      videoId: string,
+      challenge: X402Challenge,
+      payment: X402PaymentPayload,
+      approvedBy: "agent" | "human",
+    ) => {
+      log({
+        level: "http",
+        scope: "http",
+        message: `Retrying GET ${challenge.resource} with X-Payment header`,
+      });
       try {
         const { unlock, xPaymentResponse, status } = await executePayment(challenge, payment);
-        log({ level: "http", scope: "http", message: `← ${status} OK`, data: { xPaymentResponse } });
-        log({ level: "success", scope: "settle", message: `Settled ${payment.amount} ${payment.asset}`, data: unlock.receipt });
+        log({
+          level: "http",
+          scope: "http",
+          message: `← ${status} OK`,
+          data: { xPaymentResponse },
+        });
+        log({
+          level: "success",
+          scope: "settle",
+          message: `Settled ${payment.amount} ${payment.asset}`,
+          data: unlock.receipt,
+        });
         finalizeUnlock(videoId, challenge, payment, unlock, approvedBy);
       } catch (err) {
-        log({ level: "error", scope: "settle", message: `Settlement failed: ${(err as Error).message}` });
+        log({
+          level: "error",
+          scope: "settle",
+          message: `Settlement failed: ${(err as Error).message}`,
+        });
       }
     },
     [finalizeUnlock, log],
@@ -123,7 +160,11 @@ export function AgentProvider({ children }: { children: ReactNode }) {
         log({ level: "http", scope: "http", message: `→ GET ${resourceUrl}` });
         const { challenge, raw, status } = await probeChallenge(resourceUrl);
         log({ level: "http", scope: "http", message: `← ${status} Payment Required`, data: raw });
-        log({ level: "decision", scope: "agent", message: `Parsed x402 challenge: ${challenge.maxAmountRequired} ${challenge.asset} → ${challenge.payTo.slice(0, 10)}…` });
+        log({
+          level: "decision",
+          scope: "agent",
+          message: `Parsed x402 challenge: ${challenge.maxAmountRequired} ${challenge.asset} → ${challenge.payTo.slice(0, 10)}…`,
+        });
 
         if (dailyRef.current.key !== todayKey()) dailyRef.current = { key: todayKey(), spent: 0 };
         const decision = evaluatePact(rules, challenge, dailyRef.current.spent);
@@ -133,7 +174,12 @@ export function AgentProvider({ children }: { children: ReactNode }) {
           return;
         }
 
-        log({ level: "info", scope: "pact", message: `Pact ✓ ${decision.needsApproval ? "(needs human approval)" : "(auto-approved)"}`, data: decision.reason });
+        log({
+          level: "info",
+          scope: "pact",
+          message: `Pact ✓ ${decision.needsApproval ? "(needs human approval)" : "(auto-approved)"}`,
+          data: decision.reason,
+        });
 
         const payment = buildPayment(challenge, wallet);
         if (decision.needsApproval) {
@@ -179,12 +225,35 @@ export function AgentProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<Ctx>(
     () => ({
-      wallet, setWallet, rules, setRules, logs, audit,
-      spentToday: dailyRef.current.spent, unlocked, pending, busyVideoId,
+      wallet,
+      setWallet,
+      rules,
+      setRules,
+      logs,
+      audit,
+      spentToday: dailyRef.current.spent,
+      unlocked,
+      pending,
+      busyVideoId,
       clearLogs: () => setLogs([]),
-      requestVideo, approvePending, rejectPending, resetWindow,
+      requestVideo,
+      approvePending,
+      rejectPending,
+      resetWindow,
     }),
-    [wallet, rules, logs, audit, unlocked, pending, busyVideoId, requestVideo, approvePending, rejectPending, resetWindow],
+    [
+      wallet,
+      rules,
+      logs,
+      audit,
+      unlocked,
+      pending,
+      busyVideoId,
+      requestVideo,
+      approvePending,
+      rejectPending,
+      resetWindow,
+    ],
   );
 
   return <AgentCtx.Provider value={value}>{children}</AgentCtx.Provider>;
