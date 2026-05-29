@@ -16,16 +16,16 @@ export const VIDEOS: Video[] = [
     priceUSDC: "0.02",
     durationSec: 33,
     poster: "https://peach.blender.org/wp-content/uploads/title_anouncement.jpg",
-    src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    src: "https://media.w3.org/2010/05/bunny/movie.mp4",
   },
   {
     id: "sintel-teaser",
     title: "Sintel — Teaser",
     description: "Mid-priced unlock. Within default per-tx cap.",
     priceUSDC: "0.08",
-    durationSec: 52,
-    poster: "https://durian.blender.org/wp-content/uploads/2010/05/sintel_poster.jpg",
-    src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+    durationSec: 99,
+    poster: "https://upload.wikimedia.org/wikipedia/commons/8/8f/Sintel_poster.jpg",
+    src: "https://media.w3.org/2010/05/sintel/trailer.mp4",
   },
   {
     id: "tears-of-steel-feature",
@@ -33,8 +33,9 @@ export const VIDEOS: Video[] = [
     description: "Above default per-tx cap → triggers human approval.",
     priceUSDC: "0.50",
     durationSec: 734,
-    poster: "https://mango.blender.org/wp-content/gallery/4k-renders/01_thom_celia_bridge.jpg",
-    src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+    poster:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Tos-poster.png/640px-Tos-poster.png",
+    src: "https://archive.org/download/Tears-of-Steel/tears_of_steel_720p.mp4",
   },
 ];
 
